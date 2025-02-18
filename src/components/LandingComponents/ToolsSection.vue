@@ -1,5 +1,10 @@
 <script>
-import { CloudArrowUpIcon, LockClosedIcon, ServerIcon } from '@heroicons/vue/20/solid'
+import {
+  LockClosedIcon,
+  PresentationChartBarIcon,
+  FunnelIcon,
+
+} from '@heroicons/vue/20/solid';
 export default {
   name: "ToolsSection",
   data(){
@@ -8,18 +13,23 @@ export default {
         {
           name: 'Analytics.',
           description: 'A detailed evaluation of key metrics, including engagement rates and performance highlights.',
-          icon: CloudArrowUpIcon,
+          icon: PresentationChartBarIcon,
         },
         {
-          name: 'SSL certificates.',
-          description: 'Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo.',
+          name: 'Style.',
+          description: 'A general overview of your account’s identity and content style across Instagram, TikTok, and YouTube.',
+          iconFont: '🔥',
+        },
+        {
+          name: 'Niche.',
+          description: 'Content categorization to identify the themes and niches you’re excelling in.',
+          icon: FunnelIcon,
+        },
+        {
+          name: 'Safety.',
+          description: 'Identification of potential content violations that affect your reach or compliance with guidelines.',
           icon: LockClosedIcon,
-        },
-        {
-          name: 'Database backups.',
-          description: 'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.',
-          icon: ServerIcon,
-        },
+        }
       ]
     }
   }
@@ -37,7 +47,8 @@ export default {
             <dl class="mt-10 max-w-xl space-y-8 text-base/7 text-gray-300 lg:max-w-none">
               <div v-for="feature in features" :key="feature.name" class="relative pl-9">
                 <dt class="inline font-semibold text-white">
-                  <component :is="feature.icon" class="absolute top-1 left-1 size-5 text-indigo-500" aria-hidden="true" />
+                  <component v-if="feature.icon" :is="feature.icon" class="absolute top-1 left-1 size-5 text-green-light" aria-hidden="true" />
+                  <span v-else class="absolute top-1 left-1 size-5 text-indigo-500">{{ feature.iconFont }}</span>
                   {{ feature.name }}
                 </dt>
                 {{ ' ' }}
