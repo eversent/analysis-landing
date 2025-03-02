@@ -1,10 +1,9 @@
-<script setup>
-import LandingPage from "./views/LandingPage/LandingPage.vue";
+<script>
 </script>
 
 <template>
   <div class="w-full h-full">
-    <LandingPage/>
+    <router-view/>
   </div>
 </template>
 
