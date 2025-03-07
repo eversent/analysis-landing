@@ -1,27 +1,14 @@
 <script>
 import DefaultInput from "../Common/DefaultInput.vue";
 import PrimaryButton from "../Common/PrimaryButton.vue";
+import DemoReportComponent from "./DemoReportComponent.vue";
 
 export default {
   name: "HeroSection",
-  components: {PrimaryButton, DefaultInput},
-  data(){
-    return {
-      urlToAnalyse: '',
-      errorMessage: ''
-    }
-  },
+  components: {DemoReportComponent, PrimaryButton, DefaultInput},
+
   methods: {
-    analyseUrl(){
-      this.errorMessage = "";
-      const regexToCheck = /^https:\/\/(www\.)?instagram\.com\/([A-Za-z0-9_.]{1,30})\/?$/;
-      console.log(this.urlToAnalyse);
-      if(this.urlToAnalyse.match(regexToCheck)){
-        this.$router.push('/analysis?url='+this.urlToAnalyse);
-      } else {
-        this.errorMessage = 'Invalid URL';
-      }
-    }
+
   }
 }
 </script>
@@ -42,17 +29,8 @@ export default {
         <p class="mt-8 text-pretty text-lg font-medium text-gray-200 sm:text-xl">
           Access powerful analytics instantly to help you craft your content strategy.
         </p>
-        <div class="mt-10 flex items-end gap-x-6">
-          <DefaultInput
-              placeholder="https://instagram.com/officialjanedoe27"
-              :model-value="urlToAnalyse"
-              label="Get your report for free!"
-              @update:model-value="(value) => urlToAnalyse = value"
-          />
-          <PrimaryButton @click="analyseUrl()" text="Get Report" />
-        </div>
-        <div class="mt-2">
-          <p class="text-red-500">{{errorMessage}}</p>
+        <div class="mt-10   ">
+          <DemoReportComponent />
         </div>
       </div>
 
