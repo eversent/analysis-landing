@@ -19,6 +19,9 @@ export default {
   computed: {
     isCompleted() {
       return this.report && this.report.status === "COMPLETED";
+    },
+    isFailed() {
+      return this.report && this.report.status === "FAILED";
     }
   },
   methods: {
@@ -45,7 +48,9 @@ export default {
     this.fetchAnalysis(); // Fetch initially
 
     this.intervalId = setInterval(() => {
-      this.fetchAnalysis();
+      if(!this.isFailed && !this.isCompleted) {
+        this.fetchAnalysis();
+      }
     }, 5000); // Poll every 3 seconds
   },
   beforeUnmount() {
@@ -55,7 +60,7 @@ export default {
 </script>
 
 <template>
-  <ReportInProgressPage v-if="!isCompleted" :stage="report?.stage || 'SCRAPING'"/>
+  <ReportInProgressPage v-if="!isCompleted" :status="this.report?.status" :stage="report?.stage || 'SCRAPING'"/>
   <StatisticsPage v-else :report-props="report"/>
 </template>
 
