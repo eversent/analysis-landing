@@ -1,0 +1,1 @@
+export const SERVER_HOST = "https://j1ce4ezqv4.execute-api.us-east-1.amazonaws.com/prod";
