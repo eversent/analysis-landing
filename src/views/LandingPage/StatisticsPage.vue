@@ -209,10 +209,16 @@ export default {
           .join(", ");
     },
     getUniqueViolations(mediaItems) {
+      if (!Array.isArray(mediaItems)) {
+        console.warn("getUniqueViolations received invalid data:", mediaItems);
+        return [];
+      }
+
       console.log(mediaItems);
-      // Flatten all violations arrays into one array
-      const allViolations = mediaItems.flatMap(item => item.violations);
-      // Create a set to remove duplicates and convert it back to an array
+
+      const allViolations = mediaItems.flatMap(item =>
+          Array.isArray(item.violations) ? item.violations : []
+      );
 
       return [...new Set(allViolations)];
     },
@@ -372,7 +378,10 @@ export default {
                              class="h-6 w-6 text-red-800"></MinusIcon>
                   <ArrowPathIcon v-else class="h-6 w-6 text-white"></ArrowPathIcon>
                   <span
-                      class="text-primary-active text font-semibold">{{
+                      :class="{'text-primary-active': reportProps.analysis[index].sentiment === 'positive',
+                      'text-red-800': reportProps.analysis[index].sentiment === 'negative',
+                      'text-white': reportProps.analysis[index].sentiment === 'neutral'}"
+                      class="text font-semibold">{{
                       reportProps.analysis[index].sentiment.charAt(0).toUpperCase() + reportProps.analysis[index].sentiment.slice(1)
                     }}</span>
                 </div>
@@ -415,6 +424,9 @@ export default {
                   <span class="text-white text-xl font-semibold">Content Categories</span>
                 </div>
                 <div class="text-xs mt-3">
+                  <span class="text-white text-sm" v-if="report.analysis[index].content_categories.length === 0">
+                    No Content Categories
+                  </span>
                 <span
                     v-for="(category) in report.analysis[index].content_categories"
                     :key="index"
@@ -430,6 +442,9 @@ export default {
                   <span class="text-white text-xl font-semibold">Content Topics</span>
                 </div>
                 <div class="text-xs mt-3">
+                  <span class="text-white text-sm" v-if="report.analysis[index].content_topics.length === 0">
+                    No Content Topics
+                  </span>
                 <span
                     v-for="(category) in report.analysis[index].content_topics"
                     class="inline-flex rounded-full text-white border px-3 py-1.5 m-1"
