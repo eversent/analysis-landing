@@ -4,7 +4,7 @@
     <div class="relative w-full">
       <template v-if="currentMedia.mediaType === 'video'">
         <video
-            class="w-full h-auto max-h-60 object-cover rounded-xl"
+            class="w-full h-auto z-50 max-h-60 object-cover rounded-xl"
             :src="currentMedia.url"
             controls
         />
@@ -20,14 +20,14 @@
       <!-- Carousel Arrows -->
       <div
           v-if="post.media.length > 1"
-          class="absolute inset-0 flex items-center justify-between px-4"
+          class="absolute inset-0 z-10 flex items-center justify-between px-4 pointer-events-none"
       >
         <!-- Left arrow -->
         <div>
           <button
               v-if="currentIndex > 0"
               @click="prevMedia"
-              class="bg-black bg-opacity-50 text-white p-2 rounded-full focus:outline-none"
+              class="bg-black bg-opacity-50 text-white p-2 rounded-full focus:outline-none pointer-events-auto"
           >
             <ChevronLeftIcon class="h-6 w-6" />
           </button>
@@ -37,7 +37,7 @@
           <button
               v-if="currentIndex < post.media.length - 1"
               @click="nextMedia"
-              class="bg-black bg-opacity-50 text-white p-2 rounded-full focus:outline-none"
+              class="bg-black bg-opacity-50 text-white p-2 rounded-full focus:outline-none pointer-events-auto"
           >
             <ChevronRightIcon class="h-6 w-6" />
           </button>
@@ -61,13 +61,13 @@
     <!-- Post metrics (likes and comments) -->
     <div class="flex lg:gap-12 gap-6 mt-3 justify-center">
       <div class="flex flex-col items-center gap-2">
-        <HeartIcon class="h-7 w-7 text-white rounded-full" />
+        <HeartIcon class="h-7 w-7 text-white rounded-full"/>
         <span class="text-white text-xs font-semibold">
           {{ post.metrics.likes }}
         </span>
       </div>
       <div class="flex flex-col items-center gap-2">
-        <ChatBubbleBottomCenterTextIcon class="h-7 w-7 text-white rounded-full" />
+        <ChatBubbleBottomCenterTextIcon class="h-7 w-7 text-white rounded-full"/>
         <span class="text-white text-xs font-semibold">
           {{ post.metrics.comments }}
         </span>
@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, nextTick } from 'vue'
+import {ref, computed, onMounted, nextTick} from 'vue'
 // Import arrow icons from Heroicons (adjust import based on your project setup)
 import {ChevronLeftIcon, ChevronRightIcon, HeartIcon, ChatBubbleBottomCenterTextIcon} from '@heroicons/vue/24/outline'
 // Make sure HeartIcon and ChatBubbleBottomCenterTextIcon are imported as well

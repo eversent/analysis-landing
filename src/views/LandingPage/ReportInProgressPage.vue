@@ -52,9 +52,9 @@ export default {
   <div class="flex flex-col gap-10 justify-center items-center w-full h-full">
     <img class="h-11" src="../../assets/landing/logo.png" alt="YOUPOST ANALYSIS" />
     <div class="lg:min-w-4xl md:min-w-2xl min-w-96 mb-10" v-if="status !== 'FAILED'">
-      <div class="mb-1 text-lg font-medium dark:text-white">{{ statusLabel }}</div>
-      <div class="w-full h-6 bg-gray-200 rounded-full dark:bg-gray-700">
-        <div class="h-6 bg-blue-600 rounded-full dark:bg-primary"
+      <div class="mb-1 text-lg font-medium text-white">{{ statusLabel }}</div>
+      <div class="w-full h-6 bg-gray-200 rounded-full bg-gray-700">
+        <div class="h-6 bg-blue-600 rounded-full bg-primary"
              :style="{width: calculateWidth}"></div>
       </div>
     </div>
