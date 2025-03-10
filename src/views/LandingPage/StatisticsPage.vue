@@ -15,6 +15,7 @@ import {
   ArrowPathIcon,
   DocumentDuplicateIcon,
   BookOpenIcon,
+    FaceSmileIcon,
     InboxIcon,
 } from "@heroicons/vue/24/outline";
 import PrimaryButton from "../../components/Common/PrimaryButton.vue";
@@ -38,6 +39,7 @@ export default {
     ExclamationTriangleIcon,
     HashtagIcon,
     PlusIcon,
+    FaceSmileIcon,
     MinusIcon,
     ArrowPathIcon,
     DocumentDuplicateIcon,
@@ -216,11 +218,19 @@ export default {
 
       console.log(mediaItems);
 
-      const allViolations = mediaItems.flatMap(item =>
-          Array.isArray(item.violations) ? item.violations : []
-      );
+      const uniqueViolations = new Map();
 
-      return [...new Set(allViolations)];
+      mediaItems.forEach(item => {
+        if (Array.isArray(item.violations)) {
+          item.violations.forEach(violation => {
+            if (!uniqueViolations.has(violation.violation_id)) {
+              uniqueViolations.set(violation.violation_id, violation);
+            }
+          });
+        }
+      });
+
+      return Array.from(uniqueViolations.values());
     },
     changeGetFullReportModalState(value){
       this.isGetFullReportModalOpen = value;
@@ -248,7 +258,7 @@ export default {
                 :src="report.profile.pic"
                 alt=""
             />
-            <span class="text-white overflow-hidden truncate">@{{ report.profile.social_handle }}</span>
+            <span class="text-white overflow-hidden truncate">@{{ report.profile.socialHandle }}</span>
           </div>
           <div class="flex gap-10 items-center justify-center">
             <div class="flex text-white flex-col">
@@ -272,17 +282,14 @@ export default {
             <p class="text-white">
               {{ report.profile.bio }}
             </p>
-            <!--            <hr class="text-white font-bold"/>-->
-            <!--            <div class="flex gap-2">-->
-            <!--              <SparklesIcon class="h-7 w-7 text-white rounded-full"/>-->
-            <!--              <span class="text-white text-xl font-semibold">Style</span>-->
-            <!--            </div>-->
-            <!--            <div class="mt-1 text-xs">-->
-            <!--              <span class="inline-flex rounded-full text-white border px-3 py-1.5 m-1">Personal Brand</span>-->
-            <!--              <span class="inline-flex rounded-full text-white border px-3 py-1.5 m-1">Health</span>-->
-            <!--              <span class="inline-flex rounded-full text-white border px-3 py-1.5 m-1">Niche Interest</span>-->
-            <!--              <span class="inline-flex rounded-full text-white border px-3 py-1.5 m-1">Business</span>-->
-            <!--            </div>-->
+            <hr class="text-white font-bold"/>
+            <div class="flex gap-2">
+              <SparklesIcon class="h-7 w-7 text-white rounded-full"/>
+              <span class="text-white text-xl font-semibold">Categories</span>
+            </div>
+            <div class="mt-1 text-xs">
+              <span v-for="category in report.profile.categories" class="inline-flex rounded-full text-white border px-3 py-1.5 m-1">{{category}}</span>
+            </div>
           </div>
         </div>
         <div
@@ -362,25 +369,8 @@ export default {
             </div>
             <div class="flex justify-between md:justify-start mt-3">
               <div class="flex flex-col ">
-                <div class="rounded-full h-7 border flex items-center gap-3 px-3 "
-                     :class="{'border-primary-active': reportProps.analysis[index].sentiment === 'positive',
-                      'border-red-800': reportProps.analysis[index].sentiment === 'negative',
-                      'border-white': reportProps.analysis[index].sentiment === 'neutral'}">
-                  <!--                  <ArrowTrendingUpIcon class="h-7 w-7 text-primary-active" />-->
-                  <PlusIcon v-if="reportProps.analysis[index].sentiment === 'positive'"
-                            class="h-6 w-6 text-primary-active"></PlusIcon>
-                  <MinusIcon v-else-if="reportProps.analysis[index].sentiment === 'negative'"
-                             class="h-6 w-6 text-red-800"></MinusIcon>
-                  <ArrowPathIcon v-else class="h-6 w-6 text-white"></ArrowPathIcon>
-                  <span
-                      :class="{'text-primary-active': reportProps.analysis[index].sentiment === 'positive',
-                      'text-red-800': reportProps.analysis[index].sentiment === 'negative',
-                      'text-white': reportProps.analysis[index].sentiment === 'neutral'}"
-                      class="text font-semibold">{{
-                      reportProps.analysis[index].sentiment.charAt(0).toUpperCase() + reportProps.analysis[index].sentiment.slice(1)
-                    }}</span>
-                </div>
-                <span class="text-white text-center">Sentiment</span>
+                <span class="text-white text-lg text-center h-7">{{ Math.round(post.metrics.engagement) }}%</span>
+                <span class="text-white text-center">Engagement</span>
               </div>
               <div class="border-l xl:mx-8 md:mx-2 mx-4 border-l-white md:block"></div>
               <div class="flex flex-col">
@@ -398,7 +388,31 @@ export default {
           <!-- Compliance and Hashtags -->
           <div class="md:col-span-2 col-span-12 md:border-l md:border-l-white mt-4 md:mt-0">
             <div class="lg:ml-5">
-              <div class="flex gap-2">
+                <div>
+                  <span class="flex gap-2 my-2">
+                    <FaceSmileIcon class="h-7 w-7 text-white rounded-full"/>
+                    <span class="text-white text-xl font-semibold">Sentiment</span>
+                  </span>
+                  <div class="rounded-full h-7 border flex items-center max-w-fit gap-3 px-3 "
+                       :class="{'border-primary-active': reportProps.analysis[index].sentiment === 'positive',
+                      'border-red-600': reportProps.analysis[index].sentiment === 'negative',
+                      'border-white': reportProps.analysis[index].sentiment === 'neutral'}">
+                    <!--                  <ArrowTrendingUpIcon class="h-7 w-7 text-primary-active" />-->
+                    <PlusIcon v-if="reportProps.analysis[index].sentiment === 'positive'"
+                              class="h-6 w-6 text-primary-active"></PlusIcon>
+                    <MinusIcon v-else-if="reportProps.analysis[index].sentiment === 'negative'"
+                               class="h-6 w-6 text-red-600"></MinusIcon>
+                    <ArrowPathIcon v-else class="h-6 w-6 text-white"></ArrowPathIcon>
+                    <span
+                        :class="{'text-primary-active': reportProps.analysis[index].sentiment === 'positive',
+                      'text-red-600': reportProps.analysis[index].sentiment === 'negative',
+                      'text-white': reportProps.analysis[index].sentiment === 'neutral'}"
+                        class="text font-semibold">{{
+                        reportProps.analysis[index].sentiment.charAt(0).toUpperCase() + reportProps.analysis[index].sentiment.slice(1)
+                      }}</span>
+                  </div>
+                </div>
+              <div class="flex mt-5 gap-2">
                 <ExclamationTriangleIcon class="h-7 w-7 text-white rounded-full"/>
                 <span class="text-white text-xl font-semibold">Compliance</span>
               </div>
@@ -411,7 +425,7 @@ export default {
               <div class="text-xs">
 
                 <span v-for="violation in getUniqueViolations(report.analysis[index].media)"
-                      class="inline-flex rounded-full text-white border px-3 py-1.5 m-1">{{ violation }}</span>
+                      class="inline-flex rounded-full text-white border px-3 py-1.5 m-1">{{ violation.violation_id }}</span>
               </div>
               <div>
                 <div class="flex gap-2 mt-5">
