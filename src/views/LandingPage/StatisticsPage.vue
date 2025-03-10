@@ -235,19 +235,14 @@ export default {
 </script>
 
 <template>
-  <div class="mx-4 md:mx-24 my-6">
+  <div class="px-4 md:px-24 py-6 bg-gradient-to-tr from-slate-900 via-gray-900 to-emerald-700">
     <img class="h-11" src="../../assets/landing/logo.png" alt="YOUPOST ANALYSIS"/>
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-12">
       <!-- Left Column -->
       <div class="lg:col-span-3 col-span-12 flex flex-col gap-8">
         <div
-            class="bg-white/10 rounded-3xl border border-white/20 border-2 p-3 flex flex-col justify-center items-center gap-4 w-full">
-          <span class="text-primary-active text-center font-semibold text-3xl">Analysis is ready!</span>
-          <p class="text-white text-center">These results are based on the three latest posts</p>
-        </div>
-        <div
             class="bg-white/10 rounded-3xl border border-white/20 border-2 p-4 py-6 flex flex-col items-center gap-4 w-full">
-          <div class="flex gap-3 items-center w-full">
+          <div class="flex gap-3 px-4 items-center w-full">
             <img
                 class="inline-block size-14 rounded-full"
                 :src="report.profile.pic"
@@ -465,4 +460,5 @@ export default {
 
 <style scoped>
 /* Add your component styles here */
+
 </style>d

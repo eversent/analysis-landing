@@ -1,6 +1,6 @@
 <script>
 import axios from "axios";
-import { SERVER_HOST } from "../../config/config.js";
+import {SERVER_HOST} from "../../config/config.js";
 import ReportInProgressPage from "./ReportInProgressPage.vue";
 import StatisticsPage from "./StatisticsPage.vue";
 
@@ -48,7 +48,7 @@ export default {
     this.fetchAnalysis(); // Fetch initially
 
     this.intervalId = setInterval(() => {
-      if(!this.isFailed && !this.isCompleted) {
+      if (!this.isFailed && !this.isCompleted) {
         this.fetchAnalysis();
       }
     }, 5000); // Poll every 3 seconds
@@ -60,8 +60,10 @@ export default {
 </script>
 
 <template>
-  <ReportInProgressPage v-if="!isCompleted" :status="this.report?.status" :stage="report?.stage || 'SCRAPING'"/>
-  <StatisticsPage v-else :report-props="report"/>
+  <div class="h-full w-full">
+    <ReportInProgressPage v-if="!isCompleted" :status="this.report?.status" :stage="report?.stage || 'SCRAPING'"/>
+    <StatisticsPage v-else :report-props="report"/>
+  </div>
 </template>
 
 <style scoped>
